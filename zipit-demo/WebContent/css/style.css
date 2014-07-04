@@ -1,0 +1,50 @@
+body{
+	display: block;
+	font-size: 12px;
+	line-height: 1.4em;
+	background: #3c435a;
+	margin: 0;
+	min-width: 0;
+	background-image: url(../images/background.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+::selection{
+	background: #3c435a;
+	color: #fff;
+	text-shadow: none;
+}
+
+#wrap {
+	padding: 7px;
+}
+
+body #wrap{
+	position: relative;
+	padding-left: 127px;
+	width: 866px;
+	height: 686px;
+}
+
+div{
+	display: block;
+}
+
+header {
+	display: block;
+	position: absolute;
+	left: 7px;
+	top: 7px;
+	width: 120px;
+	height: 686px;
+	background-image: url(../images/searchAddress.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+body #container {
+	padding: 61px 63px 37px;
+	height: 588px;
+	background-color: #edefef;
+}
