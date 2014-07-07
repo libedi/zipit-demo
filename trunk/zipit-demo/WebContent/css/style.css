@@ -1,6 +1,16 @@
+@font-face{
+	font-family:'NanumGothic';
+	src: url('../fonts/NanumGothic.eot');
+	src: url('../fonts/NanumGothic.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/NanumGothic.woff') format('woff'),
+         url('../fonts/NanumGothic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal; 
+}
 body{
+	font-family: '³ª´®°íµñ', 'NanumGothic', "Helvetica Neue", Helvetica, Arial, sans-serif;
 	display: block;
-	font-size: 12px;
+	font-size: 11px;
 	line-height: 1.4em;
 	background: #3c435a;
 	margin: 0;
@@ -55,12 +65,15 @@ header a.eq1 {
 	background-position: 0% 100%;
 }
 header a.eq1.on {
-	background-position: 100% 1000%;
+	background-position: 100% 100%;
 }
 body #container {
 	padding: 61px 63px 37px;
 	height: 588px;
 	background-color: #edefef;
+}
+label {
+	padding-left: 10px;
 }
 .close {
 	position: absolute;
@@ -73,4 +86,36 @@ body #container {
 	background-repeat: no-repeat;
 	background-position: 0 0;
 	background-size: auto auto; 
+}
+.search-address > * {
+	font-size: 14px;
+}
+.search-address select {
+	padding: 0 34px 0 8px;
+	height: 52px;
+	line-height: 50px;
+	color: #444;
+}
+.search-address input[type=text] {
+	height: 46px;
+	line-height: 18px;
+}
+.search-address a > img {
+	position: relative;
+	top: 21px;
+	width: 50px;
+	height: 51px;
+	color: #000; 
+}
+.search-address a > img {
+	border: 1px solid #b9b9b9;
+}
+.warning {
+	color:yellow;
+}
+.danger {
+	color: red;
+}
+.info {
+	color: aqua;
 }
