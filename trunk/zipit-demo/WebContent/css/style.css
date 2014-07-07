@@ -9,28 +9,23 @@ body{
 	background-repeat: repeat;
 	background-position: 0 0;
 }
-
 ::selection{
 	background: #3c435a;
 	color: #fff;
 	text-shadow: none;
 }
-
 #wrap {
 	padding: 7px;
 }
-
 body #wrap{
 	position: relative;
 	padding-left: 127px;
 	width: 866px;
 	height: 686px;
 }
-
 div{
 	display: block;
 }
-
 header {
 	display: block;
 	position: absolute;
@@ -42,9 +37,40 @@ header {
 	background-repeat: no-repeat;
 	background-position: 0 0;
 }
-
+header a {
+	display: block;
+	height: 120px;
+	background-image: url(../images/nav.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: auto auto; 
+}
+header a.eq0 {
+	background-position: 0% 0%;
+}
+header a.eq0.on {
+	background-position: 100% 0%;
+}
+header a.eq1 {
+	background-position: 0% 100%;
+}
+header a.eq1.on {
+	background-position: 100% 1000%;
+}
 body #container {
 	padding: 61px 63px 37px;
 	height: 588px;
 	background-color: #edefef;
+}
+.close {
+	position: absolute;
+	right: 7px;
+	top: 7px;
+	display: inline-block;
+	width: 52px;
+	height: 54px;
+	background-image: url(../images/close.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: auto auto; 
 }

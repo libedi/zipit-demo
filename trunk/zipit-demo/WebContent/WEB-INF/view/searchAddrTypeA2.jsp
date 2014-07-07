@@ -6,19 +6,17 @@
 <meta charset="UTF-8">
 <title>주소정제 데모화면</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/script/common.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>
 <body>
 	<div id="wrap">
 		<header>
-			<h1 class="blind">주소검색</h1>
 			<nav>
-				<ul>
-					<li class="eq0 on"><a href="javascript:fn_crossTap('A1');"><span class="blind">지번주소1</span></a></li>
-					<li class="eq0"><a href="javascript:fn_crossTap('A2');"><span class="blind">지번주소2</span></a></li>
-					<li class="eq1"><a href="javascript:fn_crossTap('B1');"><span class="blind">도로명주소1</span></a></li>
-					<li class="eq1"><a href="javascript:fn_crossTap('B2');"><span class="blind">도로명주소2</span></a></li>
-				</ul>
+				<a href="javascript:moveTap('A1');" class="eq0 on"></a>
+				<a href="javascript:moveTap('A2');" class="eq0"></a>
+				<a href="javascript:moveTap('B1');" class="eq1"></a>
+				<a href="javascript:moveTap('B2');" class="eq1"></a>
 			</nav>
 		</header>
 		<div id="container">
@@ -62,5 +60,6 @@
 			</div>
 		</div>
 	</div>
+	<a href="javascript:self.close();" class="close"></a>
 </body>
 </html>
