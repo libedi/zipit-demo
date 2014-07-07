@@ -20,7 +20,7 @@ function openPopup(){
 	var height = 800;
 	var posX = (screen.availWidth - width) / 2;
 	var posY = (screen.availHeight - height) / 2;
-	var popUrl = "${pageContext.request.contextPath }/zipitDemo?mode=searchAddressForm";
+	var popUrl = "${pageContext.request.contextPath }/zipitDemo?mode=searchAddressFormTypeA1";
 	var option = "resizable=no, scrollbars=yes, status=no, " + "width=" + width + ",height=" + height + ",top=" + posY + ",left=" + posX;
 	
 	window.open(popUrl, "", option);
