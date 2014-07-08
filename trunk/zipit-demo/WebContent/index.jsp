@@ -26,11 +26,6 @@ function openPopup(){
 	window.open(popUrl, "", option);
 }
 </script>
-<style type="text/css">
-body {
-	margin : 0 auto;
-}
-</style>
 </head>
 <body>
 <button type="button" id="btn" name="btn">주소검색</button>

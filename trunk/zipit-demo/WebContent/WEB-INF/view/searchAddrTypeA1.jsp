@@ -60,6 +60,20 @@
 					</div>
 				</div>
 			</div>
+			(01) 나머지 주소를 입력해주세요.
+			<div class="obj-1">
+				<p class="title">검색된 주소</p>
+				<div class="form">
+			       <form onSubmit="fn_GetRefinde(); return false;">
+					<input id="dbZipcd" type="text" style="width: 47px;" readonly="readonly">
+					<input id="dbAddr1" type="text" style="width: 268px;" readonly="readonly">
+					<input id="dbAddr2" type="text" style="width: 268px;" maxLength="50">
+					<input type="submit" value="검증" class="btn-box-blue">
+				   </form>	
+				</div>
+				<p class="desc">예) “OOO아파트 OOO동 OOO호”, 또는 “OOO-OO번지”</p>
+			</div>
+			
 		</div>
 	</div>
 	<a href="javascript:self.close();" class="close"></a>
