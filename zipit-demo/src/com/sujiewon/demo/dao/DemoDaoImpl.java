@@ -4,11 +4,11 @@ import com.sujiewon.demo.common.JDBCFactory;
 
 public class DemoDaoImpl implements DemoDao {
 	
-	private JDBCFactory jdbc = JDBCFactory.getInstance();
+	private JDBCFactory jdbc = null;
 	private static DemoDao instance = null;
 	
 	private DemoDaoImpl(){
-		
+		jdbc = JDBCFactory.getInstance();
 	}
 	public static DemoDao getInstance(){
 		if(instance == null){
@@ -20,4 +20,5 @@ public class DemoDaoImpl implements DemoDao {
 		}
 		return instance;
 	}
+	
 }
