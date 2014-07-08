@@ -43,7 +43,7 @@ header {
 	top: 7px;
 	width: 120px;
 	height: 686px;
-	background-image: url(../images/searchAddress.png);
+	background-image: url(../images/search_address.png);
 	background-repeat: no-repeat;
 	background-position: 0 0;
 }
@@ -53,7 +53,8 @@ header a {
 	background-image: url(../images/nav.png);
 	background-repeat: no-repeat;
 	background-position: 0 0;
-	background-size: auto auto; 
+	background-size: auto auto;
+	margin-bottom: 2px; 
 }
 header a.eq0 {
 	background-position: 0% 0%;
@@ -68,7 +69,7 @@ header a.eq1.on {
 	background-position: 100% 100%;
 }
 body #container {
-	padding: 61px 63px 37px;
+	padding: 50px 60px 37px;
 	height: 588px;
 	background-color: #edefef;
 }
@@ -92,23 +93,19 @@ label {
 }
 .search-address select {
 	padding: 0 34px 0 8px;
-	height: 52px;
-	line-height: 50px;
+	height: 40px;
 	color: #444;
 }
 .search-address input[type=text] {
-	height: 46px;
+	height: 34px;
 	line-height: 18px;
 }
-.search-address a > img {
+.search-address button.search{
 	position: relative;
-	top: 21px;
-	width: 50px;
-	height: 51px;
-	color: #000; 
-}
-.search-address a > img {
-	border: 1px solid #b9b9b9;
+	top: 3px;
+	width: 42px;
+	height: 42px;
+	background-color: #fff;
 }
 .warning {
 	color:yellow;
@@ -118,4 +115,60 @@ label {
 }
 .info {
 	color: aqua;
+}
+.desc {
+	color: gray;
+}
+div.title {
+	margin: 25px 0 7px;
+	font-size: 12px;
+	font-weight: normal;
+	color: #333;
+}
+.border {
+	border: 1px solid #d6d6d6;
+	background-color: #f5f5f5;
+	padding: 5px 13px;
+}
+.msg {
+	margin: 3px;
+	background-image: url(../images/message.png);
+	background-repeat: no-repeat;
+	background-position: 20px 7px;
+	background-size: auto auto;
+	padding: 7px 20px 7px 74px;
+	font-size: 12px;
+	line-height: 18px; 
+}
+ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	list-style-image: none;
+}
+.refineSearch {
+	padding: 0;
+	font-size: 12px;
+	line-height: 23px;
+	color: #444;
+	overflow-y: auto;
+	height: 92px; 
+}
+li.odd{
+	background-color: #eaecec;
+}
+.option{
+	display: inline-block;
+	width: 120px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+}
+div.box-right {
+	margin: 12px 0;
+	text-align: right;
+}
+.blue-btn{
+	background-color: #3c435a;
+	color: #fff;
 }

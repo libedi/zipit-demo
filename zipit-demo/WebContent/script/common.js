@@ -1,3 +1,12 @@
+$(function(){
+	// 취소버튼 이벤트
+	$("#cancelBtn").click(function(){
+		self.close;
+	});
+	
+});
+
+
 // 탭 이동
 function moveTab(tab){
 	var path = "";
