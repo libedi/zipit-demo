@@ -1,28 +1,26 @@
 package com.sujiewon.demo.common;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyFactory {
 	
+	private Properties props;
 	private String propertyFile;
 	
+	public PropertyFactory() {
+		props = new Properties();
+	}
+
 	public void setPropertyFile(String propertyFile) {
 		this.propertyFile = propertyFile;
 	}
 	
-	public String getProperty(String keyName) throws IOException{
-		Properties props = new Properties();
-		
-		String value = "";
-		if( getClass().getClassLoader().getResourceAsStream(propertyFile) != null ) {
-			props.load( getClass().getClassLoader().getResourceAsStream(propertyFile) );
-		} else {
-			throw new FileNotFoundException();
-		}
-		value = props.getProperty(keyName).trim();
-		
-		return value;
+	public void loadProperty() throws IOException{
+		props.load(getClass().getClassLoader().getResourceAsStream(propertyFile));
+	}
+	
+	public String getProperty(String keyName){
+		return props.getProperty(keyName).trim();
 	}
 }

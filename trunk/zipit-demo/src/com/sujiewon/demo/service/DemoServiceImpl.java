@@ -5,11 +5,11 @@ import com.sujiewon.demo.dao.DemoDaoImpl;
 
 public class DemoServiceImpl implements DemoService {
 	
-	private DemoDao demoDao = DemoDaoImpl.getInstance();
+	private DemoDao demoDao = null;
 	private static DemoService instance = null;
 	
 	private DemoServiceImpl(){
-		
+		demoDao = DemoDaoImpl.getInstance();
 	}
 	public static DemoService getInstance(){
 		if(instance == null){
