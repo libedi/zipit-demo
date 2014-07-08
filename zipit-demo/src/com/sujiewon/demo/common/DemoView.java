@@ -1,28 +1,28 @@
 package com.sujiewon.demo.common;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 public class DemoView {
-	private Map<String, Object> model;
+	private HttpServletRequest req;
 	private String path;
 	
-	public DemoView() {
+	public DemoView(HttpServletRequest req) {
 		super();
+		this.req = req;
 	}
 
-	public DemoView(String path) {
+	public DemoView(HttpServletRequest req, String path) {
 		super();
+		this.req = req;
 		this.path = path;
 	}
 
-	public Map<String, Object> getModel() {
-		return model;
+	public Object getModel(String modelName) {
+		return this.req.getAttribute(modelName);
 	}
 
-	public void setModel(String key, Object value) {
-		this.model = new HashMap<String, Object>();
-		this.model.put(key, value);
+	public void setModel(String modelName, Object modelObject) {
+		this.req.setAttribute(modelName, modelObject);
 	}
 
 	public String getPath() {

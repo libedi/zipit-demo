@@ -6,10 +6,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sujiewon.demo.common.DemoView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-public class DemoController {
+import com.sujiewon.demo.common.AbstractCommonController;
+import com.sujiewon.demo.common.DemoView;
+import com.sujiewon.demo.service.DemoService;
+import com.sujiewon.demo.service.DemoServiceImpl;
+
+public class DemoController extends AbstractCommonController {
 	
+	private DemoService demoService = DemoServiceImpl.getInstance();
+	private Log log = LogFactory.getLog(getClass());
 	private String defaultPath = "/WEB-INF/view/";
 	
 	/**
@@ -21,7 +29,7 @@ public class DemoController {
 	 */
 	public DemoView searchAddressFormTypeA1(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String path = this.defaultPath + "searchAddrTypeA1.jsp";
-		return new DemoView(path);
+		return new DemoView(request, path);
 	}
 	
 	/**
@@ -33,7 +41,7 @@ public class DemoController {
 	 */
 	public DemoView searchAddressFormTypeA2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String path = this.defaultPath + "searchAddrTypeA2.jsp";
-		return new DemoView(path);
+		return new DemoView(request, path);
 	}
 	
 	/**
@@ -45,7 +53,7 @@ public class DemoController {
 	 */
 	public DemoView searchAddressFormTypeB1(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String path = this.defaultPath + "searchAddrTypeB1.jsp";
-		return new DemoView(path);
+		return new DemoView(request, path);
 	}
 	
 	/**
@@ -57,6 +65,6 @@ public class DemoController {
 	 */
 	public DemoView searchAddressFormTypeB2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String path = this.defaultPath + "searchAddrTypeB2.jsp";
-		return new DemoView(path);
+		return new DemoView(request, path);
 	}
 }

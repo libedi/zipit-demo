@@ -29,13 +29,13 @@ public class DemoServlet extends HttpServlet {
 		String mode = request.getParameter("mode");
 		demoController = new DemoController();
 		
-		if(mode.equals("searchAddressFormTypeA1")){			// 주소검색 (지번주소 1안)
+		if(mode.equals("searchAddressFormTypeA1")){			// 주소검색화면 (지번주소 1안)
 			demoView = this.demoController.searchAddressFormTypeA1(request, response);
-		} else if(mode.equals("searchAddressFormTypeA2")){	// 주소검색 (지번주소 2안)
+		} else if(mode.equals("searchAddressFormTypeA2")){	// 주소검색화면 (지번주소 2안)
 			demoView = this.demoController.searchAddressFormTypeA2(request, response);
-		} else if(mode.equals("searchAddressFormTypeB1")){	// 주소검색 (도로명주소 1안)
+		} else if(mode.equals("searchAddressFormTypeB1")){	// 주소검색화면 (도로명주소 1안)
 			demoView = this.demoController.searchAddressFormTypeB1(request, response);
-		} else if(mode.equals("searchAddressFormTypeB2")){	// 주소검색 (도로명주소 2안)
+		} else if(mode.equals("searchAddressFormTypeB2")){	// 주소검색화면 (도로명주소 2안)
 			demoView = this.demoController.searchAddressFormTypeB2(request, response);
 		} else {
 			
