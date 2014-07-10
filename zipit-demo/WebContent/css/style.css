@@ -33,6 +33,52 @@ body #wrap{
 	width: 866px;
 	height: 686px;
 }
+table {
+	border-color: gray;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.search-address {
+	position: relative;
+	z-index: 10;
+}
+.search-address .result{
+	position: absolute;
+	left: 0;
+	top: 58px;
+	overflow-y: auto;
+	max-height: 262px;
+	border: 1px solid #858585;
+	background-color: #f5f5f5;
+}
+.result table{
+	table-layout: fixed;
+	width: 100%;
+}
+.result th, td{
+	font-weight: normal;
+	font-size: 12px;
+	padding: 0 8px;
+	text-align: center;
+	color: #444;
+}
+.result th{
+	line-height: 38px;
+	background-color: #f7f7f7;
+	border-left: 1px solid #d3d3d3;
+}
+.result th:FIRST-CHILD{
+	border-left: 0;
+}
+.result td {
+	line-height: 31px;
+	border-top: 1px solid #ededed;
+	cursor: pointer;
+	background-color: #fff;
+}
+.result tr:hover td {
+	background-color: #f8f8f8;
+}
 div{
 	display: block;
 }

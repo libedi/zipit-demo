@@ -17,7 +17,7 @@ public class JDBCFactory {
 		pf.setPropertyFile("jdbc.properties");
 		try {
 			pf.loadProperty();
-			driverClass = pf.getProperty("driverClassName");
+			driverClass = pf.getProperty("driverClass");
 			url = pf.getProperty("url");
 			username = pf.getProperty("username");
 			password = pf.getProperty("password");

@@ -7,6 +7,110 @@
 <title>주소정제 데모화면</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	// 주소조회 버튼 이벤트
+	$("#searchBtn").click(function(){
+		searchAddress();
+	});
+});
+
+// 주소조회
+function searchAddress(){
+	// 화면 초기화
+	initSearchAddress();
+	
+	var dongName = $("#dongName").val();
+	var newZipCode = $("#newZipCode").val();
+	var sido = $("#sido > option:selected").val();
+	
+	if(dongName == ''){
+		alert("읍면동리 명을 입력해주세요.");
+		$("#dongName").focus();
+		return;
+	}
+	
+	var param = {
+		mode : 'J',
+		dongName : dongName,
+		newZipCode : newZipCode,
+		sido : sido
+	};
+	
+	$.ajax({
+		type : "post",
+		url : "${pageContext.request.contextPath }/zipitDemo?mode=searchAddressA2",
+		data : param,
+		dataType : "json"
+	}).done(function(data){
+		callbackSearch(data);
+	});
+}
+
+//주소조회 콜백함수
+function callbackSearch(data){
+	var html = "";
+	html += '<table>';
+	html += '<col style="width:16%""></col>';
+	html += '<thead>';
+	html += '<tr>';
+	html += '<th>새우편번호</th>';
+	html += '<th>시도</th>';
+	html += '<th>군구</th>';
+	html += '<th>읍/면/동</th>';
+	html += '<th>리</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	
+	var len = data.length;
+	
+	if(len > 0){
+		for(var i=0; i<len; i++){
+			var row = data[i];
+			
+			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
+			if(row.RI != null && row.RI != ''){
+				addr += row.RI;
+			}
+			
+			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'\');">';
+			html += "<td>" + row.NEW_ZIPCODE + "</td>";
+			html += "<td>" + row.SIDO + "</td>";
+			html += "<td>" + row.GUGUN + "</td>";
+			html += "<td>" + row.DONG + "</td>";
+			html += "<td>" + row.RI + "</td>";
+			html += '</tr>';
+		}
+	} else {
+		html += "<tr><td colspan='5'>해당 주소가 없습니다.</td></tr>";
+	}
+	
+	html += '</tbody></table>';
+	$("#dbSearch").html(html);
+	$(".result").show();
+}
+
+//조회한 주소 적용하기
+function applyAddress(zipCd, addr1, addr2){
+	$("#dbZipcd").val(zipCd);
+	$("#dbAddr1").val(addr1);
+	if(addr2 != ''){
+		$("#dbAddr2").val(addr2 + " ");
+	}
+	$("#dbAddr2").focus();
+	$(".result").hide();
+	$("#dbSearch").empty();
+}
+
+//조회된 주소 초기화
+function initSearchAddress(){
+	$("#dbZipcd").val('');
+	$("#dbAddr1").val('');
+	$("#dbAddr2").val('');
+	$("#respMsg").html('&nbsp;');
+}
+</script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>
 <body>
@@ -22,7 +126,7 @@
 		<div id="container">
 			<div class="search-address">
 			    <form>
-			    	<label for="sido" class="danger">* 시/도</label>
+			    	<input type="text" class="number" id="newZipCode" maxLength="6" style="width: 80px; ime-mode:active;"  placeholder="새우편번호">
 			    	<select id="sido">
 						<option value="">시/도 </option>
 						<option value="서울">서울</option>
@@ -43,9 +147,8 @@
 						<option value="전북">전북</option>
 						<option value="제주">제주</option>
 					</select>
-					<label for="dongName" class="danger">* 읍면동리</label>
 					<input type="text" id="dongName" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="읍면동리" />
-					<button type="button" class="search">
+					<button type="button" class="search" id="searchBtn">
 						<img src="${pageContext.request.contextPath }/images/search_icon.png"/>
 					</button>
 				</form>
@@ -61,25 +164,27 @@
 			<div class="border">
 				<p>* 검색된 주소</p>
 				<div>
-					<form onSubmit="fn_GetRefinde(); return false;">
-						<input id="dbZipcd" type="text" style="width: 47px;" readonly />
-						<input id="dbAddr1" type="text" style="width: 268px;" readonly />
-						<input id="dbAddr2" type="text" style="width: 268px;" maxLength="50" />
+					<form>
+						<input type="text" id="dbZipcd" style="width: 47px;" readonly />
+						<input type="text" id="dbAddr1" style="width: 268px;" readonly />
+						<input type="text" id="dbAddr2" style="width: 268px;" maxLength="50" />
 						<button type="button" class="blue-btn">검증</button>
 				   </form>	
 				</div>
 				<p class="desc">예) “OOO아파트 OOO동 OOO호”, 또는 “OOO-OO번지”</p>
 			</div>
 			<div class="border">
-				<p class="msg danger">&nbsp;</p>
+				<p class="msg danger" id="respMsg" >&nbsp;</p>
 			</div>
 			<div class="title">2. 선택할 주소</div>
-			<ul class="border refineSearch">
-				<li>&nbsp;</li>
-				<li class="odd">&nbsp;</li>
-				<li>&nbsp;</li>
-				<li class="odd">&nbsp;</li>
-			</ul>
+			<div id="refinedAddress">
+				<ul class="border refineSearch">
+					<li>&nbsp;</li>
+					<li class="odd">&nbsp;</li>
+					<li>&nbsp;</li>
+					<li class="odd">&nbsp;</li>
+				</ul>
+			</div>
 			<div class="title">3. 주소확인</div>
 			<ul class="border">
 				<li>
