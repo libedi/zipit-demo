@@ -62,7 +62,7 @@ public class DemoDaoImpl implements DemoDao {
 				sql.append("	and SIDO like '%' || ? || '%' \n");
 			}
 			if(!bunji1.isEmpty()){
-				sql.append("	and ( NULLIF(S_MAINBJ, '')::INT <= NULLIF(?, '')::INT and NULLIF(E_MAINBJ, '')::INT >= NULLIF(?, '')::INT ) \n");
+				sql.append("	and ( NULLIF(S_MAINBJ, '')::INT <= NULLIF(?, '')::INT and COALESCE(NULLIF(E_MAINBJ, ''),'99999')::INT >= NULLIF(?, '')::INT ) \n");
 			}
 			sql.append("order by SIDO, GUGUN, DONG, RI, NULLIF(S_MAINBJ,'')::INT, NULLIF(S_SUBBJ,'')::INT ");
 			
@@ -89,16 +89,16 @@ public class DemoDaoImpl implements DemoDao {
 			
 			while(rs.next()){
 				resultObj = new JSONObject();
-				resultObj.put("NEW_ZIPCODE", 		rs.getString("NEW_ZIPCODE"));
-				resultObj.put("SIDO", 				rs.getString("SIDO"));
-				resultObj.put("GUGUN", 				rs.getString("GUGUN"));
-				resultObj.put("DONG", 				rs.getString("DONG"));
-				resultObj.put("RI", 				rs.getString("RI"));
-				resultObj.put("SANYN", 				rs.getString("SANYN"));
-				resultObj.put("S_MAINBJ", 			rs.getString("S_MAINBJ"));
-				resultObj.put("S_SUBBJ", 			rs.getString("S_SUBBJ"));
-				resultObj.put("E_MAINBJ", 			rs.getString("E_MAINBJ"));
-				resultObj.put("E_SUBBJ", 			rs.getString("E_SUBBJ"));
+				resultObj.put("NEW_ZIPCODE", 	rs.getString("NEW_ZIPCODE"));
+				resultObj.put("SIDO", 			rs.getString("SIDO"));
+				resultObj.put("GUGUN", 			rs.getString("GUGUN"));
+				resultObj.put("DONG", 			rs.getString("DONG"));
+				resultObj.put("RI", 			rs.getString("RI"));
+				resultObj.put("SANYN", 			rs.getString("SANYN"));
+				resultObj.put("S_MAINBJ", 		rs.getString("S_MAINBJ"));
+				resultObj.put("S_SUBBJ", 		rs.getString("S_SUBBJ"));
+				resultObj.put("E_MAINBJ", 		rs.getString("E_MAINBJ"));
+				resultObj.put("E_SUBBJ", 		rs.getString("E_SUBBJ"));
 				resultList.put(resultObj);
 			}
 		} catch (Exception e) {

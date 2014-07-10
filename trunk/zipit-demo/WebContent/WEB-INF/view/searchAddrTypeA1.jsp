@@ -75,11 +75,11 @@ function callbackSearch(data){
 			
 			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
 			if(row.RI != null && row.RI != ''){
-				addr += row.RI;
+				addr += ' ' + row.RI;
 			}
 			var detailAddr = $("#bunji1").val();
 			if($("#bunji2").val() != ''){
-				detailAddr += '-' + $("#bunji2").val() + ' '; 
+				detailAddr += '-' + $("#bunji2").val() + ' ';
 			}
 			
 			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'' + detailAddr + '\');">';
