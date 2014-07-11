@@ -23,6 +23,19 @@ public interface DemoDao {
 	 */
 	JSONArray getJibunAddressList2(HashMap<String, Object> paramMap) throws Exception;
 
+	/**
+	 * 도로명주소리스트 1안 조회
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	JSONArray getDoroAddressList1(HashMap<String, Object> paramMap) throws Exception;
 	
+	/**
+	 * 시/도별 시/군/구 조회
+	 * @param paramMap
+	 * @return
+	 */
+	JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception;
 
 }

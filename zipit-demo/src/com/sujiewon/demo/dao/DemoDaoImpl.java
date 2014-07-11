@@ -59,7 +59,7 @@ public class DemoDaoImpl implements DemoDao {
 				sql.append("	and NEW_ZIPCODE = ? \n");
 			}
 			if(!sido.isEmpty()){
-				sql.append("	and SIDO like '%' || ? || '%' \n");
+				sql.append("	and SIDO = ? \n");
 			}
 			if(!bunji1.isEmpty()){
 				sql.append("	and ( (NULLIF(S_MAINBJ, '')::INT <= NULLIF(?, '')::INT and NULLIF(E_MAINBJ, '')::INT >= NULLIF(?, '')::INT ) \n");
@@ -138,7 +138,7 @@ public class DemoDaoImpl implements DemoDao {
 				sql.append("	and NEW_ZIPCODE = ? \n");
 			}
 			if(!sido.isEmpty()){
-				sql.append("	and SIDO like '%' || ? || '%' \n");
+				sql.append("	and SIDO = ? \n");
 			}
 			sql.append("order by SIDO, GUGUN, DONG, RI ");
 			
@@ -167,6 +167,146 @@ public class DemoDaoImpl implements DemoDao {
 				resultObj.put("GUGUN", 				rs.getString("GUGUN"));
 				resultObj.put("DONG", 				rs.getString("DONG"));
 				resultObj.put("RI", 				rs.getString("RI"));
+				resultList.put(resultObj);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			throw e;
+		} finally{
+			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+		}
+		
+		return resultList;
+	}
+	
+	@Override
+	public JSONArray getDoroAddressList1(HashMap<String, Object> paramMap) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONObject resultObj = null;
+		JSONArray resultList = new JSONArray();
+		
+		try{
+			conn = jdbc.getConnection();
+			
+			String newZipCode = paramMap.get("newZipCode").toString();
+			String sido 	= paramMap.get("sido").toString();
+			String sigungu 	= paramMap.get("sigungu").toString();
+			String road 	= paramMap.get("road").toString();
+			String bldNm 	= paramMap.get("bldNm").toString();
+			String bldMain 	= paramMap.get("bldMain").toString();
+			String bldSub 	= paramMap.get("bldSub").toString();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append(SqlQuery.selectDoro1Tb);
+			sql.append("where \n");
+			sql.append("	SIDO_NM = ? \n");
+			if(!newZipCode.isEmpty()){
+				sql.append("	and NEW_ZIPCODE = ? \n");
+			}
+			if(!sigungu.isEmpty()){
+				sql.append("	and SIGUNGU_NM like '%' || ? || '%' \n");
+			}
+			if(!road.isEmpty()){
+				sql.append("	and RD_NM like '%' || ? || '%' \n");
+			}
+			if(!bldNm.isEmpty()){
+				sql.append("	and BLD_NM like '%' || ? || '%' \n");
+			}
+			if(!bldMain.isEmpty()){
+				sql.append("	and BLD_MAIN_NO = ? \n");
+			}
+			sql.append("order by SIDO_NM, SIGUNGU_NM, UM_NM, RD_NM, BLD_MAIN_NO, BLD_NM");
+			
+			// Query debug log
+			if(log.isDebugEnabled()){
+				log.debug("Query\n" + sql.toString());
+			}
+			
+			pstmt = conn.prepareStatement(sql.toString());
+			int index = 1;
+			pstmt.setString(index++, sido);
+			if(!newZipCode.isEmpty()){
+				pstmt.setString(index++, newZipCode);
+			}
+			if(!sigungu.isEmpty()){
+				pstmt.setString(index++, sigungu);
+			}
+			if(!road.isEmpty()){
+				pstmt.setString(index++, road);
+			}
+			if(!bldNm.isEmpty()){
+				pstmt.setString(index++, bldNm);
+			}
+			if(!bldMain.isEmpty()){
+				pstmt.setString(index++, bldMain);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				resultObj = new JSONObject();
+				resultObj.put("UNQ_BLD_MNO", 		rs.getString("UNQ_BLD_MNO"));
+				resultObj.put("UNQ_BLD_MNO_SEQ", 	rs.getString("UNQ_BLD_MNO_SEQ"));
+				resultObj.put("RD_NM_CD", 			rs.getString("RD_NM_CD"));
+				resultObj.put("EMD_SRNO", 			rs.getString("EMD_SRNO"));
+				resultObj.put("SIDO_NM", 			rs.getString("SIDO_NM"));
+				resultObj.put("SIGUNGU_NM", 		rs.getString("SIGUNGU_NM"));
+				resultObj.put("UM_NM", 				rs.getString("UM_NM"));
+				resultObj.put("RD_NM", 				rs.getString("RD_NM"));
+				resultObj.put("UNDER_GUBUN", 		rs.getString("UNDER_GUBUN"));
+				resultObj.put("BLD_MAIN_NO", 		rs.getString("BLD_MAIN_NO"));
+				resultObj.put("BLD_SUB_NO", 		rs.getString("BLD_SUB_NO"));
+				resultObj.put("BLD_NM", 			rs.getString("BLD_NM"));
+				resultObj.put("SASEHAM", 			rs.getString("SASEHAM"));
+				resultObj.put("NEW_ZIPCODE", 		rs.getString("NEW_ZIPCODE"));
+				resultList.put(resultObj);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			throw e;
+		} finally{
+			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+		}
+		
+		return resultList;
+	}
+	
+	@Override
+	public JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONObject resultObj = null;
+		JSONArray resultList = new JSONArray();
+		
+		try{
+			conn = jdbc.getConnection();
+			
+			String sido = paramMap.get("sido").toString();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("select \n");
+			sql.append("	distinct SIGUNGU_NM \n");
+			sql.append("from \n");
+			sql.append("	DORO1_2AN \n");
+			sql.append("where \n");
+			sql.append("	SIDO_NM = ? \n");
+			sql.append("order by 1");
+			
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, sido);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				resultObj = new JSONObject();
+				resultObj.put("SIGUNGU_NM", rs.getString("SIGUNGU_NM"));
 				resultList.put(resultObj);
 			}
 		} catch (Exception e){

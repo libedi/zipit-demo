@@ -7,6 +7,163 @@
 <title>주소정제 데모화면</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	// 시/도 셀렉트 이벤트
+	$("#sido").change(function(){
+		var sido = $("#sido > option:selected").val();
+		if(sido != ''){
+			$.ajax({
+				type : "post",
+				url : "${pageContext.request.contextPath }/zipitDemo?mode=getSigunguList",
+				data : {
+					sido : $("#sido > option:selected").val()
+				},
+				dataType : "json"
+			}).done(function(data){
+				applySigungu(data);
+			});
+		} else {
+			$("#sigungu").empty();
+			$("#sigungu").html('<option value="">시/군/구</option>');
+		}
+	});
+	
+	// 주소조회 버튼 이벤트
+	$("#searchBtn").click(function(){
+		searchAddress();
+	});
+});
+
+// 시/도별 시/군/구 적용
+function applySigungu(data){
+	var len = data.length;
+	
+	var html = '<option value="">시/군/구</option>';
+	for(var i=0; i<len; i++){
+		html += '<option value="">' + data[i].SIGUNGU_NM + '</option>';
+	}
+	$("#sigungu").empty();
+	$("#sigungu").html(html);
+}
+
+// 주소조회
+function searchAddress(){
+	var newZipCode = $("#newZipCode").val();
+	var sido = $("#sido > option:selected").val();
+	var sigungu = $("#sigungu > option:selected").val();
+	var road = $("#road").val();
+	var bldNm = $("#bldNm").val();
+	var bldMain = $("#bldMain").val();
+	var bldSub = $("#bldSub").val();
+	
+	// 입력값 유효성 검사
+	if(sido == ''){
+		alert("시/도 를 선택해주세요.");
+		$("#sido").focus();
+		return;
+	}
+	if(road == '' && bldNm == ''){
+		alert("도로명 또는 건물명을 입력해주세요.");
+		return;
+	} else if(road != '' && road.length < 2){
+		alert("도로명을 2글자 이상 입력하세요.");
+		$("#road").focus();
+		return;
+	}
+	
+	var param = {
+		newZipCode : newZipCode,
+		sido : sido,
+		sigungu : sigungu,
+		road : road,
+		bldNm : bldNm,
+		bldMain : bldMain,
+		bldSub : bldSub
+	};
+	
+	$.ajax({
+		type : "post",
+		url : "${pageContext.request.contextPath }/zipitDemo?mode=searchAddressB1",
+		data : param,
+		dataType : "json"
+	}).done(function(data){
+		callbackSearch(data);
+	});
+}
+
+//주소조회 콜백함수
+function callbackSearch(data){
+	var html = "";
+	html += '<table>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col style="width: 20%;"></col>';
+	html += '<thead>';
+	html += '<tr>';
+	html += '<th>새우편번호</th>';
+	html += '<th>시도</th>';
+	html += '<th>시군구</th>';
+	html += '<th>읍/면</th>';
+	html += '<th>도로명</th>';
+	html += '<th>건물번호</th>';
+	html += '<th>건물명/사서함</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	
+	var len = data.length;
+	
+	if(len > 0){
+		for(var i=0; i<len; i++){
+			var row = data[i];
+			
+			파라미터 셋팅할것
+			
+			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
+			if(row.RI != null && row.RI != ''){
+				addr += ' ' + row.RI;
+			}
+			var detailAddr = $("#bunji1").val();
+			if($("#bunji2").val() != ''){
+				detailAddr += '-' + $("#bunji2").val() + ' ';
+			}
+			
+			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'' + detailAddr + '\');">';
+			html += "<td>" + row.NEW_ZIPCODE + "</td>";
+			html += "<td>" + row.SIDO + "</td>";
+			html += "<td>" + row.GUGUN + "</td>";
+			html += "<td>" + row.DONG + "</td>";
+			html += "<td>" + row.RI + "</td>";
+			html += "<td>";
+			if(row.SANYN != null && row.SANYN == '1'){
+				html += '산 ';
+			}
+			html += row.S_MAINBJ;
+			if(row.S_SUBBJ != null && row.S_SUBBJ != ''){	// 부번지
+				html += '-' + row.S_SUBBJ;
+			}
+			if(row.E_MAINBJ != null && row.E_MAINBJ != ''){
+				html += ' ~ ' + row.E_MAINBJ;
+			}
+			if(row.E_SUBBJ != null && row.E_SUBBJ != ''){
+				html += '-' + row.E_SUBBJ;
+			}
+			html += '</td></tr>';
+		}
+	} else {
+		html += "<tr><td colspan='6'>해당 주소가 없습니다.</td></tr>";
+	}
+	
+	html += '</tbody></table>';
+	$("#dbSearch").html(html);
+	$(".result").show();
+}
+</script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>
 <body>
@@ -22,34 +179,35 @@
 		<div id="container">
 			<div class="search-address">
 			    <form>
+			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 65px; ime-mode:active;" placeholder="새우편번호" />
 			    	<select id="sido">
 						<option value="">시/도 </option>
-						<option value="서울">서울</option>
-						<option value="부산">부산</option>
-						<option value="대구">대구</option>
-						<option value="광주">광주</option>
-						<option value="인천">인천</option>
-						<option value="대전">대전</option>
-						<option value="울산">울산</option>
-						<option value="세종">세종</option>
-						<option value="경기">경기</option>
-						<option value="강원">강원</option>
-						<option value="충남">충남</option>
-						<option value="충북">충북</option>
-						<option value="경남">경남</option>
-						<option value="경북">경북</option>
-						<option value="전남">전남</option>
-						<option value="전북">전북</option>
-						<option value="제주">제주</option>
+						<option value="서울특별시">서울</option>
+						<option value="부산광역시">부산</option>
+						<option value="대구광역시">대구</option>
+						<option value="광주광역시">광주</option>
+						<option value="인천광역시">인천</option>
+						<option value="대전광역시">대전</option>
+						<option value="울산광역시">울산</option>
+						<option value="세종특별자치시">세종</option>
+						<option value="경기도">경기</option>
+						<option value="강원도">강원</option>
+						<option value="충청남도">충남</option>
+						<option value="충청북도">충북</option>
+						<option value="경상남도">경남</option>
+						<option value="경상북도">경북</option>
+						<option value="전라남도">전남</option>
+						<option value="전라북도">전북</option>
+						<option value="제주특별자치도">제주</option>
 					</select>
 					<select id="sigungu">
 						<option value="">시/군/구</option>
 					</select>
 					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력하세요" />
-					<input type="text" id="bld_nm" placeholder="건물명 입력" maxLength="5" style="ime-mode:disabled; width: 100px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" /> 
-					<input type="text" id="bld_main" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 40px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" /> - 
-					<input type="text" id="bld_sub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 40px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" />
-					<button type="button" class="search">
+					<input type="text" class="number" id="bldNm" placeholder="건물명 입력" maxLength="5" style="ime-mode:disabled; width: 100px;" /> 
+					<input type="text" class="number" id="bldMain" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 40px;" /> - 
+					<input type="text" class="number" id="bldSub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 40px;" />
+					<button type="button" class="search" id="searchBtn">
 						<img src="${pageContext.request.contextPath }/images/search_icon.png" alt="검색"/>
 					</button>
 					<div class="danger" style="font-size: 12px;">* 필수입력항목 : [시/도] + [도로명 또는 건물명]</div>
@@ -66,19 +224,19 @@
 			<div class="border">
 				<p>* 검색된 주소</p>
 				<div>
-					<form onSubmit="fn_GetRefinde(); return false;">
+					<form>
 						<input id="dbZipcd" type="text" style="width: 47px;" readonly="readonly">
 						<input id="dbAddr1"  type="text" style="width: 314px;" readonly="readonly">
 						<select id="DBUnderCD" name="DBUnderCD">
-							<option value="0"  selected="selected">지상</option>
-							<option value="1"  >지하</option>
-							<option value="2"  >공중</option>
+							<option value="0" selected="selected">지상</option>
+							<option value="1">지하</option>
+							<option value="2">공중</option>
 						</select>
-						<input id="dbBldMain"  type="text" maxLength="5" style="ime-mode:disabled; width: 47px;" onKeypress="onlyNumber();"> - 
-						<input id="dbBldSub"  type="text" maxLength="5" style="ime-mode:disabled; width: 47px;" onKeypress="onlyNumber();">
+						<input type="text" class="number" id="dbBldMain" maxLength="5" style="ime-mode:disabled; width: 47px;" /> - 
+						<input type="text" class="number" id="dbBldSub" maxLength="5" style="ime-mode:disabled; width: 47px;" />
 						<br>
 						<input id="dbAddr2" type="text" maxLength="50" style="width: 608px;">
-						<button type="button" class="blue-btn" onclick="javascript:fn_GetRefinde();">검증</button>
+						<button type="button" class="blue-btn">검증</button>
 				   </form>	
 				</div>
 				<p class="desc">예) “OOO아파트 OOO동 OOO호”, 또는 “OOO-OO번지”</p>
