@@ -62,7 +62,8 @@ public class DemoDaoImpl implements DemoDao {
 				sql.append("	and SIDO like '%' || ? || '%' \n");
 			}
 			if(!bunji1.isEmpty()){
-				sql.append("	and ( NULLIF(S_MAINBJ, '')::INT <= NULLIF(?, '')::INT and COALESCE(NULLIF(E_MAINBJ, ''),'99999')::INT >= NULLIF(?, '')::INT ) \n");
+				sql.append("	and ( (NULLIF(S_MAINBJ, '')::INT <= NULLIF(?, '')::INT and NULLIF(E_MAINBJ, '')::INT >= NULLIF(?, '')::INT ) \n");
+				sql.append("		or NULLIF(S_MAINBJ, '')::INT = NULLIF(?, '')::INT ) \n");
 			}
 			sql.append("order by SIDO, GUGUN, DONG, RI, NULLIF(S_MAINBJ,'')::INT, NULLIF(S_SUBBJ,'')::INT ");
 			
@@ -82,6 +83,7 @@ public class DemoDaoImpl implements DemoDao {
 				pstmt.setString(index++, sido);
 			}
 			if(!bunji1.isEmpty()){
+				pstmt.setString(index++, bunji1);
 				pstmt.setString(index++, bunji1);
 				pstmt.setString(index++, bunji1);
 			}
