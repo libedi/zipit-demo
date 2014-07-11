@@ -26,9 +26,15 @@ function searchAddress(){
 	var bunji1 = $("#bunji1").val();
 	var bunji2 = $("#bunji2").val();
 	
+	// 입력값 유효성 검사
 	if(dongName == ''){
 		alert("읍면동리 명을 입력해주세요.");
 		$("#dongName").focus();
+		return;
+	}
+	if(bunji1 == ''){
+		alert("번지수를 입력해주세요.");
+		$("#bunji1").focus();
 		return;
 	}
 	
@@ -148,30 +154,30 @@ function initSearchAddress(){
 		<div id="container">
 			<div class="search-address">
 			    <form>
-			    	<input type="text" class="number" id="newZipCode" maxLength="6" style="width: 80px; ime-mode:active;"  placeholder="새우편번호">
+			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 80px; ime-mode:active;" placeholder="새우편번호"/>
 			    	<select id="sido">
 						<option value="">시/도 </option>
-						<option value="서울">서울</option>
-						<option value="부산">부산</option>
-						<option value="대구">대구</option>
-						<option value="광주">광주</option>
-						<option value="인천">인천</option>
-						<option value="대전">대전</option>
-						<option value="울산">울산</option>
-						<option value="세종">세종</option>
-						<option value="경기">경기</option>
-						<option value="강원">강원</option>
-						<option value="충남">충남</option>
-						<option value="충북">충북</option>
-						<option value="경남">경남</option>
-						<option value="경북">경북</option>
-						<option value="전남">전남</option>
-						<option value="전북">전북</option>
-						<option value="제주">제주</option>
+						<option value="서울특별시">서울</option>
+						<option value="부산광역시">부산</option>
+						<option value="대구광역시">대구</option>
+						<option value="광주광역시">광주</option>
+						<option value="인천광역시">인천</option>
+						<option value="대전광역시">대전</option>
+						<option value="울산광역시">울산</option>
+						<option value="세종특별자치시">세종</option>
+						<option value="경기도">경기</option>
+						<option value="강원도">강원</option>
+						<option value="충청남도">충남</option>
+						<option value="충청북도">충북</option>
+						<option value="경상남도">경남</option>
+						<option value="경상북도">경북</option>
+						<option value="전라남도">전남</option>
+						<option value="전라북도">전북</option>
+						<option value="제주특별자치도">제주</option>
 					</select>
 					<input type="text" id="dongName" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="읍면동리" />
-					<input type="text" class="number" id="bunji1" placeholder="번지1" maxLength="5" style="ime-mode:disabled; width: 40px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" /> - 
-					<input type="text" class="number" id="bunji2" placeholder="번지2" maxLength="5" style="ime-mode:disabled; width: 40px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" />
+					<input type="text" class="number" id="bunji1" maxLength="5" style="ime-mode:disabled; width: 40px;" placeholder="번지1" /> - 
+					<input type="text" class="number" id="bunji2" maxLength="5" style="ime-mode:disabled; width: 40px;" placeholder="번지2" />
 					<button type="button" class="search" id="searchBtn">
 						<img src="${pageContext.request.contextPath }/images/search_icon.png"/>
 					</button>
