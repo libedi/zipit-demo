@@ -50,6 +50,12 @@ public class DemoServlet extends HttpServlet {
 				demoView = this.demoController.searchAddressA1(request, response);
 			} else if(mode.equals("searchAddressA2")){			// 주소검색 (지번주소 2안)
 				demoView = this.demoController.searchAddressA2(request, response);
+			} else if(mode.equals("searchAddressB1")){			// 주소검색 (도로명주소 1안)
+				demoView = this.demoController.searchAddressB1(request, response);
+			} else if(mode.equals("searchAddressB2")){			// 주소검색 (도로명주소 2안)
+				demoView = this.demoController.searchAddressB2(request, response);
+			} else if(mode.equals("getSigunguList")){			// 시/도 별 시/군/구 조회
+				demoView = this.demoController.getSigunguList(request, response);
 			} else {
 				
 			}

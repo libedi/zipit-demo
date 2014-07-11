@@ -25,12 +25,25 @@ public class DemoServiceImpl implements DemoService {
 		}
 		return instance;
 	}
+	
 	@Override
 	public JSONArray getJibunAddressList1(HashMap<String, Object> paramMap) throws Exception {
 		return this.demoDao.getJibunAddressList1(paramMap);
 	}
+	
 	@Override
 	public JSONArray getJibunAddressList2(HashMap<String, Object> paramMap) throws Exception {
 		return this.demoDao.getJibunAddressList2(paramMap);
 	}
+	
+	@Override
+	public JSONArray getDoroAddressList1(HashMap<String, Object> paramMap) throws Exception {
+		return this.demoDao.getDoroAddressList1(paramMap);
+	}
+	
+	@Override
+	public JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception {
+		return this.demoDao.getSigunguList(paramMap);
+	}
+	
 }

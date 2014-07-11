@@ -117,4 +117,63 @@ public class DemoController extends AbstractCommonController {
 		
 		return view;
 	}
+
+	/**
+	 * 주소검색 (도로명주소 1안)
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception 
+	 */
+	public DemoView searchAddressB1(HttpServletRequest request,	HttpServletResponse response) throws Exception {
+		String path = this.defaultPath + "jsonResult.jsp";
+		DemoView view = new DemoView(request, path);
+		HashMap<String, Object> paramMap = this.makeParamMap(request);
+		JSONArray searchAddress = null;
+		
+		try {
+			searchAddress = this.demoService.getDoroAddressList1(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		view.setModel("result", searchAddress);
+		
+		return view;
+	}
+
+	/**
+	 * 주소검색 (도로명주소 2안)
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public DemoView searchAddressB2(HttpServletRequest request,	HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * 시/도 별 시/군/구 조회
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception 
+	 */
+	public DemoView getSigunguList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String path = this.defaultPath + "jsonResult.jsp";
+		DemoView view = new DemoView(request, path);
+		HashMap<String, Object> paramMap = this.makeParamMap(request);
+		JSONArray sigunguList = null;
+		
+		try {
+			sigunguList = this.demoService.getSigunguList(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		view.setModel("result", sigunguList);
+		return view;
+	}
+
 }
