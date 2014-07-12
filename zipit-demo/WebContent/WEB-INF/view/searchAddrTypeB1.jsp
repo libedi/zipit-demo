@@ -122,7 +122,7 @@ function callbackSearch(data){
 		for(var i=0; i<len; i++){
 			var row = data[i];
 			
-			파라미터 셋팅할것
+			//파라미터 셋팅할것
 			
 			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
 			if(row.RI != null && row.RI != ''){
@@ -140,17 +140,17 @@ function callbackSearch(data){
 			html += "<td>" + row.DONG + "</td>";
 			html += "<td>" + row.RI + "</td>";
 			html += "<td>";
-			if(row.SANYN != null && row.SANYN == '1'){
+			if(row.SANYN != null && row.SANYN == '1'){		// 산 여부
 				html += '산 ';
 			}
 			html += row.S_MAINBJ;
-			if(row.S_SUBBJ != null && row.S_SUBBJ != ''){	// 부번지
+			if(row.S_SUBBJ != null && row.S_SUBBJ != ''){	// 시작 부번지
 				html += '-' + row.S_SUBBJ;
 			}
-			if(row.E_MAINBJ != null && row.E_MAINBJ != ''){
+			if(row.E_MAINBJ != null && row.E_MAINBJ != ''){	// 종료 주번지
 				html += ' ~ ' + row.E_MAINBJ;
 			}
-			if(row.E_SUBBJ != null && row.E_SUBBJ != ''){
+			if(row.E_SUBBJ != null && row.E_SUBBJ != ''){	// 종료 부번지
 				html += '-' + row.E_SUBBJ;
 			}
 			html += '</td></tr>';
@@ -203,7 +203,7 @@ function callbackSearch(data){
 					<select id="sigungu">
 						<option value="">시/군/구</option>
 					</select>
-					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력하세요" />
+					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력" />
 					<input type="text" class="number" id="bldNm" placeholder="건물명 입력" maxLength="5" style="ime-mode:disabled; width: 100px;" /> 
 					<input type="text" class="number" id="bldMain" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 40px;" /> - 
 					<input type="text" class="number" id="bldSub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 40px;" />
@@ -225,10 +225,10 @@ function callbackSearch(data){
 				<p>* 검색된 주소</p>
 				<div>
 					<form>
-						<input id="dbZipcd" type="text" style="width: 47px;" readonly="readonly">
-						<input id="dbAddr1"  type="text" style="width: 314px;" readonly="readonly">
+						<input id="dbZipcd" type="text" style="width: 47px;" readonly />
+						<input id="dbAddr1"  type="text" style="width: 314px;" readonly />
 						<select id="DBUnderCD" name="DBUnderCD">
-							<option value="0" selected="selected">지상</option>
+							<option value="0" selected>지상</option>
 							<option value="1">지하</option>
 							<option value="2">공중</option>
 						</select>
