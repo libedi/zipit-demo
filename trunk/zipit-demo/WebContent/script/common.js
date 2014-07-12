@@ -1,7 +1,7 @@
 $(function(){
 	// 취소버튼 이벤트
 	$("#cancelBtn").click(function(){
-		self.close;
+		self.close();
 	});
 	
 	// 숫자필드 입력

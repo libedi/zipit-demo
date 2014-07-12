@@ -22,6 +22,7 @@
 		<div id="container">
 			<div class="search-address">
 			    <form>
+			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 65px; ime-mode:active;" placeholder="새우편번호" />
 			    	<select id="sido">
 						<option value="">시/도 </option>
 						<option value="서울특별시">서울</option>
@@ -45,10 +46,10 @@
 					<select id="sigungu">
 						<option value="">시/군/구</option>
 					</select>
-					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력하세요" />
-					<input type="text" id="bld_main" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 50px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" /> - 
-					<input type="text" id="bld_sub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 50px;"onKeypress="onlyNumber();" onkeydown="javascript:if(event.keyCode=='13'){fn_GetSearch();}" />
-					<button type="button" class="search">
+					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력" />
+					<input type="text" class="number" id="bld_main" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 50px;" /> - 
+					<input type="text" class="number" id="bld_sub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 50px;" />
+					<button type="button" class="search" id="searchBtn">
 						<img src="${pageContext.request.contextPath }/images/search_icon.png" alt="검색"/>
 					</button>
 					<div class="danger" style="font-size: 12px;">* 필수입력항목 : [시/도] + [도로명 또는 건물명]</div>
@@ -65,18 +66,18 @@
 			<div class="border">
 				<p>* 검색된 주소</p>
 				<div>
-					<form onSubmit="fn_GetRefinde(); return false;">
-						<input id="dbZipcd" type="text" style="width: 47px;" readonly="readonly">
-						<input id="dbAddr1"  type="text" style="width: 314px;" readonly="readonly">
+					<form>
+						<input id="dbZipcd" type="text" style="width: 47px;" readonly />
+						<input id="dbAddr1"  type="text" style="width: 314px;" readonly />
 						<select id="DBUnderCD" name="DBUnderCD">
-							<option value="0"  selected="selected">지상</option>
+							<option value="0"  selected>지상</option>
 							<option value="1"  >지하</option>
 							<option value="2"  >공중</option>
 						</select>
-						<input id="dbBldMain"  type="text" maxLength="5" style="ime-mode:disabled; width: 47px;" onKeypress="onlyNumber();"> - 
-						<input id="dbBldSub"  type="text" maxLength="5" style="ime-mode:disabled; width: 47px;" onKeypress="onlyNumber();">
+						<input type="text" class="number" id="dbBldMain" maxLength="5" style="ime-mode:disabled; width: 47px;" /> - 
+						<input type="text" class="number" id="dbBldSub" maxLength="5" style="ime-mode:disabled; width: 47px;" />
 						<br>
-						<input id="dbAddr2" type="text" maxLength="50" style="width: 608px;">
+						<input id="dbAddr2" type="text" maxLength="50" style="width: 608px;" />
 						<button type="button" class="blue-btn" onclick="javascript:fn_GetRefinde();">검증</button>
 				   </form>	
 				</div>
