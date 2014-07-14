@@ -15,7 +15,7 @@ $(function(){
 		if(sido != ''){
 			$.ajax({
 				type : "post",
-				url : "${pageContext.request.contextPath }/zipitDemo?mode=getSigunguList",
+				url : "${pageContext.request.contextPath }/zipitDemo?mode=getSigunguList1",
 				data : {
 					sido : $("#sido > option:selected").val()
 				},
@@ -92,7 +92,7 @@ function searchAddress(){
 	});
 }
 
-//주소조회 콜백함수
+// 주소조회 콜백함수
 function callbackSearch(data){
 	var html = "";
 	html += '<table>';
@@ -122,46 +122,68 @@ function callbackSearch(data){
 		for(var i=0; i<len; i++){
 			var row = data[i];
 			
-			//파라미터 셋팅할것
+			// 기본주소
+			var addr = row.SIDO_NM + ' ' + row.SIGUNGU_NM + ' ';
+			if(row.UM_NM != null && row.UM_NM != ''){
+				addr += row.UM_NM + ' ';
+			}
+			addr += row.RD_NM;
+			// 지하여부
+			var under = '';
+			if(row.UNDER_GUBUN == '1'){
+				under = '지하';
+			} else if(row.UNDER_GUBUN == '2'){
+				under = '공중';
+			}
+			// 건물번호
+			var bldNum = under + ' ' + row.BLD_MAIN_NO;
+			if(row.BLD_SUB_NO == '0'){
+				row.BLD_SUB_NO = '';
+			} else {
+				bldNum += '-' + row.BLD_SUB_NO;
+			}
 			
-			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
-			if(row.RI != null && row.RI != ''){
-				addr += ' ' + row.RI;
-			}
-			var detailAddr = $("#bunji1").val();
-			if($("#bunji2").val() != ''){
-				detailAddr += '-' + $("#bunji2").val() + ' ';
-			}
-			
-			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'' + detailAddr + '\');">';
-			html += "<td>" + row.NEW_ZIPCODE + "</td>";
-			html += "<td>" + row.SIDO + "</td>";
-			html += "<td>" + row.GUGUN + "</td>";
-			html += "<td>" + row.DONG + "</td>";
-			html += "<td>" + row.RI + "</td>";
-			html += "<td>";
-			if(row.SANYN != null && row.SANYN == '1'){		// 산 여부
-				html += '산 ';
-			}
-			html += row.S_MAINBJ;
-			if(row.S_SUBBJ != null && row.S_SUBBJ != ''){	// 시작 부번지
-				html += '-' + row.S_SUBBJ;
-			}
-			if(row.E_MAINBJ != null && row.E_MAINBJ != ''){	// 종료 주번지
-				html += ' ~ ' + row.E_MAINBJ;
-			}
-			if(row.E_SUBBJ != null && row.E_SUBBJ != ''){	// 종료 부번지
-				html += '-' + row.E_SUBBJ;
-			}
-			html += '</td></tr>';
+			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\',\'' + addr + '\',\'' + row.UNDER_GUBUN + '\',\'' + row.BLD_MAIN_NO + '\',\'' + row.BLD_SUB_NO + '\');">';
+			html += '<td>' + row.NEW_ZIPCODE + '</td>';
+			html += '<td>' + row.SIDO_NM + '</td>';
+			html += '<td>' + row.SIGUNGU_NM + '</td>';
+			html += '<td>' + row.UM_NM + '</td>';
+			html += '<td>' + row.RD_NM + '</td>';
+			html += '<td>' + bldNum + '</td>';
+			html += '<td>' + row.BLD_NM + '</td>';
+			html += '</tr>';
 		}
 	} else {
-		html += "<tr><td colspan='6'>해당 주소가 없습니다.</td></tr>";
+		html += '<tr><td colspan="7">해당 주소가 없습니다.</td></tr>';
 	}
 	
 	html += '</tbody></table>';
 	$("#dbSearch").html(html);
 	$(".result").show();
+}
+
+// 조회한 주소 적용하기
+function applyAddress(newZipCode, addr, under, bldMainNo, bldSubNo){
+	//지하여부 없을땐 지상으로 기본 셋팅
+	if(under == ''){
+		under = '0';
+	}
+	// 필드값 셋팅
+	$("#dbZipcd").val(newZipCode);
+	$("#dbAddr1").val(addr);
+	$("#DBUnderCD").val(under);
+	$("#DBUnderCD").focus();
+	$("#dbBldMain").val(bldMainNo);
+	$("#dbBldSub").val(bldSubNo);
+	
+	if(bldMainNo == ""){
+		$("#dbBldMain").focus();
+	} else{
+		$("#dbAddr2").focus();
+	}
+	
+	$("#dbSearch").html('');
+	$(".result").hide();
 }
 </script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">

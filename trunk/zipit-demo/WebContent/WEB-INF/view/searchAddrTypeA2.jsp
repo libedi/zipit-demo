@@ -48,7 +48,7 @@ function searchAddress(){
 	});
 }
 
-//주소조회 콜백함수
+// 주소조회 콜백함수
 function callbackSearch(data){
 	var html = "";
 	html += '<table>';
@@ -92,7 +92,7 @@ function callbackSearch(data){
 	$(".result").show();
 }
 
-//조회한 주소 적용하기
+// 조회한 주소 적용하기
 function applyAddress(zipCd, addr1, addr2){
 	$("#dbZipcd").val(zipCd);
 	$("#dbAddr1").val(addr1);

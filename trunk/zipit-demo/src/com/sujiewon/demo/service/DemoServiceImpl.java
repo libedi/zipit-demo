@@ -42,8 +42,29 @@ public class DemoServiceImpl implements DemoService {
 	}
 	
 	@Override
-	public JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception {
-		return this.demoDao.getSigunguList(paramMap);
+	public JSONArray getDoroAddressList2(HashMap<String, Object> paramMap) throws Exception {
+		// 제외할 range 코드값
+		String range = "";
+		String bldMainNum = paramMap.get("bldMain").toString();
+		if(bldMainNum != null && !bldMainNum.isEmpty()){
+			if(Integer.parseInt(bldMainNum) % 2 == 1){
+				range = "EVEN";
+			} else {
+				range = "ODD";
+			}
+		}
+		paramMap.put("range", range);
+		return this.demoDao.getDoroAddressList2(paramMap);
+	}
+	
+	@Override
+	public JSONArray getSigunguList1(HashMap<String, Object> paramMap) throws Exception {
+		return this.demoDao.getSigunguList1(paramMap);
+	}
+	
+	@Override
+	public JSONArray getSigunguList2(HashMap<String, Object> paramMap) throws Exception {
+		return this.demoDao.getSigunguList2(paramMap);
 	}
 	
 }

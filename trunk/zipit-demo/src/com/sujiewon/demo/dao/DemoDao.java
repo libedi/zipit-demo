@@ -30,12 +30,27 @@ public interface DemoDao {
 	 * @throws Exception
 	 */
 	JSONArray getDoroAddressList1(HashMap<String, Object> paramMap) throws Exception;
+
+	/**
+	 * 도로명주소리스트 2안 조회
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	JSONArray getDoroAddressList2(HashMap<String, Object> paramMap) throws Exception;
 	
 	/**
-	 * 시/도별 시/군/구 조회
+	 * 시/도별 시/군/구 조회 1안
 	 * @param paramMap
 	 * @return
 	 */
-	JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception;
+	JSONArray getSigunguList1(HashMap<String, Object> paramMap) throws Exception;
+	
+	/**
+	 * 시/도별 시/군/구 조회 2안
+	 * @param paramMap
+	 * @return
+	 */
+	JSONArray getSigunguList2(HashMap<String, Object> paramMap) throws Exception;
 
 }
