@@ -198,7 +198,7 @@ public class DemoDaoImpl implements DemoDao {
 			String road 	= paramMap.get("road").toString();
 			String bldNm 	= paramMap.get("bldNm").toString();
 			String bldMain 	= paramMap.get("bldMain").toString();
-			String bldSub 	= paramMap.get("bldSub").toString();
+//			String bldSub 	= paramMap.get("bldSub").toString();
 			
 			StringBuffer sql = new StringBuffer();
 			sql.append(SqlQuery.selectDoro1Tb);
@@ -208,7 +208,7 @@ public class DemoDaoImpl implements DemoDao {
 				sql.append("	and NEW_ZIPCODE = ? \n");
 			}
 			if(!sigungu.isEmpty()){
-				sql.append("	and SIGUNGU_NM like '%' || ? || '%' \n");
+				sql.append("	and SIGUNGU_NM = ? \n");
 			}
 			if(!road.isEmpty()){
 				sql.append("	and RD_NM like '%' || ? || '%' \n");
@@ -219,7 +219,7 @@ public class DemoDaoImpl implements DemoDao {
 			if(!bldMain.isEmpty()){
 				sql.append("	and BLD_MAIN_NO = ? \n");
 			}
-			sql.append("order by SIDO_NM, SIGUNGU_NM, UM_NM, RD_NM, BLD_MAIN_NO, BLD_NM");
+			sql.append("order by SIDO_NM, SIGUNGU_NM, UM_NM, substring(RD_NM from '[^0-9]+'), substring(RD_NM from '([0-9]+)')::INT, BLD_MAIN_NO::INT, BLD_NM ");
 			
 			// Query debug log
 			if(log.isDebugEnabled()){
@@ -278,7 +278,105 @@ public class DemoDaoImpl implements DemoDao {
 	}
 	
 	@Override
-	public JSONArray getSigunguList(HashMap<String, Object> paramMap) throws Exception {
+	public JSONArray getDoroAddressList2(HashMap<String, Object> paramMap) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONObject resultObj = null;
+		JSONArray resultList = new JSONArray();
+		
+		try{
+			conn = jdbc.getConnection();
+			
+			String newZipCode = paramMap.get("newZipCode").toString();
+			String sido 	= paramMap.get("sido").toString();
+			String sigungu 	= paramMap.get("sigungu").toString();
+			String road 	= paramMap.get("road").toString();
+			String bldMain 	= paramMap.get("bldMain").toString();
+//			String bldSub 	= paramMap.get("bldSub").toString();
+			String range	= paramMap.get("range").toString();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append(SqlQuery.selectDoro2Tb);
+			sql.append("where \n");
+			sql.append("	SIDO_NM = ? \n");
+			if(!newZipCode.isEmpty()){
+				sql.append("	and NEW_ZIPCODE = ? \n");
+			}
+			if(!sigungu.isEmpty()){
+				sql.append("	and SIGUNGU_NM = ? \n");
+			}
+			if(!road.isEmpty()){
+				sql.append("	and RD_NM like '%' || ? || '%' \n");
+			}
+			if(!bldMain.isEmpty()){
+				sql.append("	and ( (NULLIF(S_MAINBN, '')::INT <= NULLIF(?, '')::INT and NULLIF(E_MAINBN, '')::INT >= NULLIF(?, '')::INT) \n");
+				sql.append("		or NULLIF(S_MAINBN, '')::INT = NULLIF(?, '')::INT ) \n");
+			}
+			if(!range.isEmpty()){
+				sql.append("	and RD_RANGE not ilike '%' || ? \n");
+			}
+			sql.append("order by SIDO_NM, SIGUNGU_NM, UM_NM, substring(RD_NM from '[^0-9]+'), substring(RD_NM from '([0-9]+)')::INT, S_MAINBN::INT ");
+			
+			// Query debug log
+			if(log.isDebugEnabled()){
+				log.debug("Query\n" + sql.toString());
+			}
+			
+			pstmt = conn.prepareStatement(sql.toString());
+			int index = 1;
+			pstmt.setString(index++, sido);
+			if(!newZipCode.isEmpty()){
+				pstmt.setString(index++, newZipCode);
+			}
+			if(!sigungu.isEmpty()){
+				pstmt.setString(index++, sigungu);
+			}
+			if(!road.isEmpty()){
+				pstmt.setString(index++, road);
+			}
+			if(!bldMain.isEmpty()){
+				pstmt.setString(index++, bldMain);
+				pstmt.setString(index++, bldMain);
+				pstmt.setString(index++, bldMain);
+			}
+			if(!range.isEmpty()){
+				pstmt.setString(index++, range);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				resultObj = new JSONObject();
+				resultObj.put("NEW_ZIPCODE", 		rs.getString("NEW_ZIPCODE"));
+				resultObj.put("NEW_ZIPCODE_SEQ", 	rs.getString("NEW_ZIPCODE_SEQ"));
+				resultObj.put("SIDO_NM", 			rs.getString("SIDO_NM"));
+				resultObj.put("SIGUNGU_NM", 		rs.getString("SIGUNGU_NM"));
+				resultObj.put("UM_NM", 				rs.getString("UM_NM"));
+				resultObj.put("RD_NM", 				rs.getString("RD_NM"));
+				resultObj.put("RD_NUMBER", 			rs.getString("RD_NUMBER"));
+				resultObj.put("UN_YN", 				rs.getString("UN_YN"));
+				resultObj.put("S_MAINBN", 			rs.getString("S_MAINBN"));
+				resultObj.put("S_SUBBN", 			rs.getString("S_SUBBN"));
+				resultObj.put("E_MAINBN", 			rs.getString("E_MAINBN"));
+				resultObj.put("E_SUBBN", 			rs.getString("E_SUBBN"));
+				resultObj.put("RD_RANGE", 			rs.getString("RD_RANGE"));
+				resultList.put(resultObj);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			throw e;
+		} finally{
+			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+		}
+		
+		return resultList;
+	}
+	
+	@Override
+	public JSONArray getSigunguList1(HashMap<String, Object> paramMap) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -297,7 +395,51 @@ public class DemoDaoImpl implements DemoDao {
 			sql.append("	DORO1_2AN \n");
 			sql.append("where \n");
 			sql.append("	SIDO_NM = ? \n");
-			sql.append("order by 1");
+			sql.append("order by 1 ");
+			
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, sido);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				resultObj = new JSONObject();
+				resultObj.put("SIGUNGU_NM", rs.getString("SIGUNGU_NM"));
+				resultList.put(resultObj);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			throw e;
+		} finally{
+			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+		}
+		
+		return resultList;
+	}
+	
+	@Override
+	public JSONArray getSigunguList2(HashMap<String, Object> paramMap) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONObject resultObj = null;
+		JSONArray resultList = new JSONArray();
+		
+		try{
+			conn = jdbc.getConnection();
+			
+			String sido = paramMap.get("sido").toString();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("select \n");
+			sql.append("	distinct SIGUNGU_NM \n");
+			sql.append("from \n");
+			sql.append("	DORO1_1AN \n");
+			sql.append("where \n");
+			sql.append("	SIDO_NM = ? \n");
+			sql.append("order by 1 ");
 			
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, sido);

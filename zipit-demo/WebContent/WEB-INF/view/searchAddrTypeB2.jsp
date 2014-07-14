@@ -7,6 +7,174 @@
 <title>주소정제 데모화면</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/script/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	// 시/도 셀렉트 이벤트
+	$("#sido").change(function(){
+		var sido = $("#sido > option:selected").val();
+		if(sido != ''){
+			$.ajax({
+				type : "post",
+				url : "${pageContext.request.contextPath }/zipitDemo?mode=getSigunguList2",
+				data : {
+					sido : $("#sido > option:selected").val()
+				},
+				dataType : "json"
+			}).done(function(data){
+				applySigungu(data);
+			});
+		} else {
+			$("#sigungu").empty();
+			$("#sigungu").html('<option value="">시/군/구</option>');
+		}
+	});
+	
+	// 주소조회 버튼 이벤트
+	$("#searchBtn").click(function(){
+		searchAddress();
+	});
+});
+
+// 시/도별 시/군/구 적용
+function applySigungu(data){
+	var len = data.length;
+	
+	var html = '<option value="">시/군/구</option>';
+	for(var i=0; i<len; i++){
+		html += '<option value="">' + data[i].SIGUNGU_NM + '</option>';
+	}
+	$("#sigungu").empty();
+	$("#sigungu").html(html);
+}
+
+// 주소조회
+function searchAddress(){
+	var newZipCode = $("#newZipCode").val();
+	var sido = $("#sido > option:selected").val();
+	var sigungu = $("#sigungu > option:selected").val();
+	var road = $("#road").val();
+	var bldMain = $("#bldMain").val();
+	var bldSub = $("#bldSub").val();
+	
+	// 입력값 유효성 검사
+	if(sido == ''){
+		alert("시/도 를 선택해주세요.");
+		$("#sido").focus();
+		return;
+	}
+	if(road != '' && road.length < 2){
+		alert("도로명을 2글자 이상 입력하세요.");
+		$("#road").focus();
+		return;
+	}
+	
+	var param = {
+		newZipCode : newZipCode,
+		sido : sido,
+		sigungu : sigungu,
+		road : road,
+		bldMain : bldMain,
+		bldSub : bldSub
+	};
+	
+	$.ajax({
+		type : "post",
+		url : "${pageContext.request.contextPath }/zipitDemo?mode=searchAddressB2",
+		data : param,
+		dataType : "json"
+	}).done(function(data){
+		callbackSearch(data);
+	});
+}
+
+// 주소조회 콜백함수
+function callbackSearch(data){
+	var html = "";
+	html += '<table>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col></col>';
+	html += '<col style="width: 20%;"></col>';
+	html += '<thead>';
+	html += '<tr>';
+	html += '<th>새우편번호</th>';
+	html += '<th>시도</th>';
+	html += '<th>시군구</th>';
+	html += '<th>읍/면</th>';
+	html += '<th>도로명</th>';
+	html += '<th>건물번호</th>';
+	html += '<th>도로명 Range</th>';
+	html += '</tr>';
+	html += '</thead>';
+	html += '<tbody>';
+	
+	var len = data.length;
+	
+	if(len > 0){
+		for(var i=0; i<len; i++){
+			var row = data[i];
+			
+			// 기본주소
+			var addr = row.SIDO_NM + ' ' + row.SIGUNGU_NM + ' ';
+			if(row.UM_NM != null && row.UM_NM != ''){
+				addr += row.UM_NM + ' ';
+			}
+			addr += row.RD_NM;
+			// 지하여부
+			var bldNum = '';
+			if(row.UNDER_GUBUN == '1'){
+				bldNum = '지하 ';
+			} else if(row.UNDER_GUBUN == '2'){
+				bldNum = '공중 ';
+			}
+			bldNum += row.RD_NUMBER;
+			
+			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\',\'' + addr + '\',\'' + row.UN_YN + '\',\'' + $("#bldMain").val() + '\',\'' + $("#bldSub").val() + '\');">';
+			html += '<td>' + row.NEW_ZIPCODE + '</td>';
+			html += '<td>' + row.SIDO_NM + '</td>';
+			html += '<td>' + row.SIGUNGU_NM + '</td>';
+			html += '<td>' + row.UM_NM + '</td>';
+			html += '<td>' + row.RD_NM + '</td>';
+			html += '<td>' + bldNum + '</td>';
+			html += '<td>' + row.RD_RANGE + '</td>';
+			html += '</tr>';
+		}
+	} else {
+		html += '<tr><td colspan="7">해당 주소가 없습니다.</td></tr>';
+	}
+	
+	html += '</tbody></table>';
+	$("#dbSearch").html(html);
+	$(".result").show();
+}
+
+// 조회한 주소 적용하기
+function applyAddress(newZipCode, addr, under, bldMainNo, bldSubNo){
+	//지하여부 없을땐 지상으로 기본 셋팅
+	if(under == ''){
+		under = '0';
+	}
+	// 필드값 셋팅
+	$("#dbZipcd").val(newZipCode);
+	$("#dbAddr1").val(addr);
+	$("#DBUnderCD").val(under);
+	$("#DBUnderCD").focus();
+	$("#dbBldMain").val(bldMainNo);
+	$("#dbBldSub").val(bldSubNo);
+	
+	if(bldMainNo == ""){
+		$("#dbBldMain").focus();
+	} else{
+		$("#dbAddr2").focus();
+	}
+	
+	$("#dbSearch").html('');
+	$(".result").hide();
+}
+</script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>
 <body>
@@ -47,8 +215,8 @@
 						<option value="">시/군/구</option>
 					</select>
 					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력" />
-					<input type="text" class="number" id="bld_main" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 50px;" /> - 
-					<input type="text" class="number" id="bld_sub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 50px;" />
+					<input type="text" class="number" id="bldMain" placeholder="번호1" maxLength="5" style="ime-mode:disabled; width: 50px;" /> - 
+					<input type="text" class="number" id="bldSub" placeholder="번호2" maxLength="5" style="ime-mode:disabled; width: 50px;" />
 					<button type="button" class="search" id="searchBtn">
 						<img src="${pageContext.request.contextPath }/images/search_icon.png" alt="검색"/>
 					</button>
