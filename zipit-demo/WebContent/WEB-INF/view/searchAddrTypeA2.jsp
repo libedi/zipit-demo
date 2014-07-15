@@ -13,12 +13,18 @@ $(function(){
 	$("#searchBtn").click(function(){
 		searchAddress();
 	});
+	
+	// 주소정제 버튼 이벤트
+	$("#refineBtn").click(function(){
+		refineAddress();
+	});
 });
 
 // 주소조회
 function searchAddress(){
 	// 화면 초기화
 	initSearchAddress();
+	initRefineAddress();
 	
 	var dongName = $("#dongName").val();
 	var newZipCode = $("#newZipCode").val();
@@ -111,6 +117,99 @@ function initSearchAddress(){
 	$("#dbAddr2").val('');
 	$("#respMsg").html('&nbsp;');
 }
+
+//정제된 주소 복수매핑 초기화
+function initRefineAddress(){
+	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
+	$("#refinedAddress").html(html);
+}
+
+//주소정제
+function refineAddress(){
+	if($("#dbAddr1").val() == ''){
+		alert("주소 검색 후 원하시는 주소를 선택해 주세요");  
+		$("#dongName").focus();
+		return;
+	}
+	
+	var param = {
+		mode : 'J',
+		encoding : 'UTF-8',
+		zipCode : $("#dbZipcd").val(),
+		addr1 : $("#dbAddr1").val(),
+		addr2 : $("#dbAddr2").val()
+	};
+	
+	$.ajax({
+		type : "post",
+		url : "${pageContext.request.contextPath }/zipitDemo?mode=refineAddress",
+		data : param,
+		dataType : "json"
+	}).done(function(data){
+		callbackRefine(data);
+	});
+}
+
+//주소정제 콜백함수
+function callbackRefine(data){
+	var html = '';
+	var len = data.DATA.length;
+	var rcd3 = data.RCD3;
+	var row = null;
+	var newZipCode = '';
+	
+	if(len > 0){
+		html = '<ul class="border refineSearch">';
+		for(var i=0; i<len; i++){
+			row = data.DATA[i];
+			newZipCode = row.ZPRN.substring(0,3) + '-' + row.ZPRN.substring(3);
+			if(rcd3 == 'C' || rcd3 == 'D' || rcd3 == 'E' || rcd3 == 'F' || rcd3 == 'G'){
+				if(row.NODE == 'D'){
+					html += '<li onclick="javascript:applyRefine(' + (i + 1) + ');">';
+					html += '[지   번]&nbsp;&nbsp;&nbsp;' + newZipCode + '&nbsp;&nbsp;&nbsp;' + row.JADM + '&nbsp;&nbsp;&nbsp;' + row.JADS;
+					html += '</li>';
+				} else {
+					html += '<li class="odd" onclick="javascript:applyRefine(' + i + ');">';
+					html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\└[도로명]&nbsp;&nbsp;&nbsp;' + newZipCode + '&nbsp;&nbsp;&nbsp;' + row.NADM + ',&nbsp;&nbsp;&nbsp;' + row.NADS;
+					html += '</li>';
+				}
+			}
+			html += '<form id="data_' + i + '">';
+			html += '<input type="hidden" id="' + i + '_JZPRN" value="' + newZipCode + '">';
+			html += '<input type="hidden" id="' + i + '_JADDR1" value="' + row.JADM + '">';
+			html += '<input type="hidden" id="' + i + '_JADDR2" value="' + row.JADS + '">';
+			html += '<input type="hidden" id="' + i + '_RZPRN" value="' + newZipCode + '">';
+			html += '<input type="hidden" id="' + i + '_RADDR1" value="' + row.NADM + '">';
+			html += '<input type="hidden" id="' + i + '_RADDR2" value="' + row.NADS + '">';
+			html += '</form>';
+		}
+		html += '</ul>';
+	}
+	
+	$("#refinedAddress").html(html);
+	if(rcd3 == 'I' || rcd3 == 'H'){
+		applyRefine(1);
+	} 
+	// 메세지 출력
+	$("#respMsg").html(data.RMG3);
+	
+	$("#inputZip").val($("#dbZipcd").val());
+	$("#inputAddr1").val($("#dbAddr1").val());
+	$("#inputAddr2").val($("#dbAddr2").val());
+}
+
+//정제된 주소값 적용하기
+function applyRefine(index){
+	// 지번 주소
+	$("#jibunZip").val($("#" + index + "_JZPRN").val());
+	$("#jibunAddr1").val($("#" + index + "_JADDR1").val());
+	$("#jibunAddr2").val($("#" + index + "_JADDR2").val());
+	// 도로명 주소
+	$("#roadZip").val($("#" + index + "_RZPRN").val());
+	$("#roadAddr1").val($("#" + index + "_RADDR1").val());
+	$("#roadAddr2").val($("#" + index + "_RADDR2").val());
+}
+
 </script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>

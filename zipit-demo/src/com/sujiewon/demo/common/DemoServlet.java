@@ -58,6 +58,8 @@ public class DemoServlet extends HttpServlet {
 				demoView = this.demoController.getSigunguList1(request, response);
 			} else if(mode.equals("getSigunguList2")){			// 시/도 별 시/군/구 조회
 				demoView = this.demoController.getSigunguList2(request, response);
+			} else if(mode.equals("refineAddress")){			// 주소정제
+				demoView = this.demoController.refineAddress(request, response);
 			} else {
 				
 			}
