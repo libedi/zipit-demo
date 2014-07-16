@@ -25,6 +25,7 @@ function searchAddress(){
 	// 화면 초기화
 	initSearchAddress();
 	initRefineAddress();
+	initConfirmAddress();
 	
 	var dongName = $("#dongName").val();
 	var newZipCode = $("#newZipCode").val();
@@ -109,20 +110,6 @@ function applyAddress(zipCd, addr1, addr2){
 	$("#dbAddr2").focus();
 	$(".result").hide();
 	$("#dbSearch").empty();
-}
-
-//조회된 주소 초기화
-function initSearchAddress(){
-	$("#dbZipcd").val('');
-	$("#dbAddr1").val('');
-	$("#dbAddr2").val('');
-	$("#respMsg").html('&nbsp;');
-}
-
-//정제된 주소 복수매핑 초기화
-function initRefineAddress(){
-	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
-	$("#refinedAddress").html(html);
 }
 
 //주소정제
@@ -211,6 +198,34 @@ function applyRefine(index){
 	$("#roadAddr2").val($("#" + index + "_RADDR2").val());
 }
 
+// 조회된 주소 초기화
+function initSearchAddress(){
+	$("#dbZipcd").val('');
+	$("#dbAddr1").val('');
+	$("#dbAddr2").val('');
+	$("#respMsg").html('&nbsp;');
+}
+
+// 정제된 주소 복수매핑 초기화
+function initRefineAddress(){
+	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
+	$("#refinedAddress").html(html);
+}
+
+
+// 주소확인란 초기화
+function initConfirmAddress(){
+	$("#roadZip").val('');
+	$("#roadAddr1").val('');
+	$("#roadAddr2").val('');
+	$("#jibunZip").val('');
+	$("#jibunAddr1").val('');
+	$("#jibunAddr2").val('');
+	$("#inputZip").val('');
+	$("#inputAddr1").val('');
+	$("#inputAddr2").val('');
+}
+
 </script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>
@@ -269,7 +284,7 @@ function applyRefine(index){
 						<input type="text" id="dbZipcd" style="width: 47px;" readonly />
 						<input type="text" id="dbAddr1" style="width: 268px;" readonly />
 						<input type="text" id="dbAddr2" style="width: 268px;" maxLength="50" />
-						<button type="button" class="blue-btn">검증</button>
+						<button type="button" class="blue-btn" id="refineBtn">검증</button>
 				   </form>	
 				</div>
 				<p class="desc">예) “OOO아파트 OOO동 OOO호”, 또는 “OOO-OO번지”</p>
