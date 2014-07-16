@@ -107,9 +107,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
@@ -173,9 +171,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally{
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
@@ -269,9 +265,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally{
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
@@ -367,9 +361,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally{
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
@@ -411,9 +403,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally{
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
@@ -455,9 +445,7 @@ public class DemoDaoImpl implements DemoDao {
 			e.printStackTrace();
 			throw e;
 		} finally{
-			if(conn != null){try {conn.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(pstmt != null){try {pstmt.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
-			if(rs != null){try {rs.close();} catch (SQLException e) {e.printStackTrace();throw e;}}
+			jdbc.close(conn, pstmt, rs);
 		}
 		
 		return resultList;
