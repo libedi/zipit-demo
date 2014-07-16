@@ -57,6 +57,7 @@ function searchAddress(){
 	// 화면 초기화
 	initSearchAddress();
 	initRefineAddress();
+	initConfirmAddress();
 	
 	var newZipCode = $("#newZipCode").val();
 	var sido = $("#sido > option:selected").val();
@@ -186,22 +187,6 @@ function applyAddress(newZipCode, addr, under, bldMainNo, bldSubNo){
 	$(".result").hide();
 }
 
-// 조회된 주소 초기화
-function initSearchAddress(){
-	$("#dbZipcd").val('');
-	$("#dbAddr1").val('');
-	$("#dbAddr2").val('');
-	$("#dbBldMain").val("");
-	$("#dbBldSub").val("");
-	$("#respMsg").html('&nbsp;');
-}
-
-// 정제된 주소 복수매핑 초기화
-function initRefineAddress(){
-	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
-	$("#refinedAddress").html(html);
-}
-
 // 주소정제
 function refineAddress(){
 	if($("#dbAddr1").val() == ''){
@@ -298,6 +283,34 @@ function applyRefine(index){
 	$("#roadAddr2").val($("#" + index + "_RADDR2").val());
 }
 
+// 조회된 주소 초기화
+function initSearchAddress(){
+	$("#dbZipcd").val('');
+	$("#dbAddr1").val('');
+	$("#dbAddr2").val('');
+	$("#dbBldMain").val("");
+	$("#dbBldSub").val("");
+	$("#respMsg").html('&nbsp;');
+}
+
+// 정제된 주소 복수매핑 초기화
+function initRefineAddress(){
+	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
+	$("#refinedAddress").html(html);
+}
+
+// 주소확인란 초기화
+function initConfirmAddress(){
+	$("#roadZip").val("");
+	$("#roadAddr1").val('');
+	$("#roadAddr2").val('');
+	$("#jibunZip").val('');
+	$("#jibunAddr1").val('');
+	$("#jibunAddr2").val('');
+	$("#inputZip").val('');
+	$("#inputAddr1").val('');
+	$("#inputAddr2").val('');
+}
 </script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 </head>

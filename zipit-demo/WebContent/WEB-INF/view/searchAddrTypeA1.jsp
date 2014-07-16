@@ -25,6 +25,7 @@ function searchAddress(){
 	// 화면 초기화
 	initSearchAddress();
 	initRefineAddress();
+	initConfirmAddress();
 	
 	var dongName = $("#dongName").val();
 	var newZipCode = $("#newZipCode").val();
@@ -138,20 +139,6 @@ function applyAddress(zipCd, addr1, addr2){
 	$("#dbSearch").empty();
 }
 
-// 조회된 주소 초기화
-function initSearchAddress(){
-	$("#dbZipcd").val('');
-	$("#dbAddr1").val('');
-	$("#dbAddr2").val('');
-	$("#respMsg").html('&nbsp;');
-}
-
-// 정제된 주소 복수매핑 초기화
-function initRefineAddress(){
-	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
-	$("#refinedAddress").html(html);
-}
-
 // 주소정제
 function refineAddress(){
 	if($("#dbAddr1").val() == ''){
@@ -236,6 +223,33 @@ function applyRefine(index){
 	$("#roadZip").val($("#" + index + "_RZPRN").val());
 	$("#roadAddr1").val($("#" + index + "_RADDR1").val());
 	$("#roadAddr2").val($("#" + index + "_RADDR2").val());
+}
+
+// 조회된 주소 초기화
+function initSearchAddress(){
+	$("#dbZipcd").val('');
+	$("#dbAddr1").val('');
+	$("#dbAddr2").val('');
+	$("#respMsg").html('&nbsp;');
+}
+
+// 정제된 주소 복수매핑 초기화
+function initRefineAddress(){
+	var html = '<ul class="border refineSearch"><li>&nbsp;</li><li class="odd">&nbsp;</li><li>&nbsp;</li><li class="odd">&nbsp;</li></ul>';
+	$("#refinedAddress").html(html);
+}
+
+// 주소확인란 초기화
+function initConfirmAddress(){
+	$("#roadZip").val('');
+	$("#roadAddr1").val('');
+	$("#roadAddr2").val('');
+	$("#jibunZip").val('');
+	$("#jibunAddr1").val('');
+	$("#jibunAddr2").val('');
+	$("#inputZip").val('');
+	$("#inputAddr1").val('');
+	$("#inputAddr2").val('');
 }
 
 </script>
