@@ -344,7 +344,7 @@ function applyRefine(index){
 						<option value="전라북도">전북</option>
 						<option value="제주특별자치도">제주</option>
 					</select>
-					<select id="sigungu">
+					<select id="sigungu" style="width: 130px;">
 						<option value="">시/군/구</option>
 					</select>
 					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력" />
