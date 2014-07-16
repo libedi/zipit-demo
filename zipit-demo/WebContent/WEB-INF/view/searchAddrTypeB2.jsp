@@ -126,6 +126,8 @@ function callbackSearch(data){
 		for(var i=0; i<len; i++){
 			var row = data[i];
 			
+			// 새우편번호
+			var newZipCode = row.NEW_ZIPCODE.substring(0,3) + '-' + row.NEW_ZIPCODE.substring(3);
 			// 기본주소
 			var addr = row.SIDO_NM + ' ' + row.SIGUNGU_NM + ' ';
 			if(row.UM_NM != null && row.UM_NM != ''){
@@ -141,8 +143,8 @@ function callbackSearch(data){
 			}
 			bldNum += row.RD_NUMBER;
 			
-			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\',\'' + addr + '\',\'' + row.UN_YN + '\',\'' + $("#bldMain").val() + '\',\'' + $("#bldSub").val() + '\');">';
-			html += '<td>' + row.NEW_ZIPCODE + '</td>';
+			html += '<tr onclick="javascript:applyAddress(\'' + newZipCode + '\',\'' + addr + '\',\'' + row.UN_YN + '\',\'' + $("#bldMain").val() + '\',\'' + $("#bldSub").val() + '\');">';
+			html += '<td>' + newZipCode + '</td>';
 			html += '<td>' + row.SIDO_NM + '</td>';
 			html += '<td>' + row.SIGUNGU_NM + '</td>';
 			html += '<td>' + row.UM_NM + '</td>';
@@ -313,7 +315,7 @@ function applyRefine(index){
 			<div class="search-address">
 			    <form>
 			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 65px; ime-mode:active;" placeholder="새우편번호" />
-			    	<select id="sido">
+			    	<select id="sido" class="search-select">
 						<option value="">시/도 </option>
 						<option value="서울특별시">서울</option>
 						<option value="부산광역시">부산</option>
@@ -333,7 +335,7 @@ function applyRefine(index){
 						<option value="전라북도">전북</option>
 						<option value="제주특별자치도">제주</option>
 					</select>
-					<select id="sigungu" style="width: 130px;">
+					<select id="sigungu" class="search-select" style="width: 130px;">
 						<option value="">시/군/구</option>
 					</select>
 					<input type="text" id="road" maxLength="20" style="width: 130px; ime-mode:active;" placeholder="도로명 입력" />

@@ -76,13 +76,14 @@ function callbackSearch(data){
 		for(var i=0; i<len; i++){
 			var row = data[i];
 			
+			var newZipCode = row.NEW_ZIPCODE.substring(0,3) + '-' + row.NEW_ZIPCODE.substring(3);
 			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
 			if(row.RI != null && row.RI != ''){
 				addr += row.RI;
 			}
 			
-			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'\');">';
-			html += "<td>" + row.NEW_ZIPCODE + "</td>";
+			html += '<tr onclick="javascript:applyAddress(\'' + newZipCode + '\', \'' + addr + '\', \'\');">';
+			html += "<td>" + newZipCode + "</td>";
 			html += "<td>" + row.SIDO + "</td>";
 			html += "<td>" + row.GUGUN + "</td>";
 			html += "<td>" + row.DONG + "</td>";
@@ -227,7 +228,7 @@ function applyRefine(index){
 			<div class="search-address">
 			    <form>
 			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 80px; ime-mode:active;" placeholder="새우편번호"/>
-			    	<select id="sido">
+			    	<select id="sido" class="search-select">
 						<option value="">시/도 </option>
 						<option value="서울특별시">서울</option>
 						<option value="부산광역시">부산</option>

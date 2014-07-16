@@ -255,7 +255,7 @@ function applyRefine(index){
 			<div class="search-address">
 			    <form>
 			    	<input type="text" class="number" id="newZipCode" maxLength="5" style="width: 80px; ime-mode:active;" placeholder="새우편번호"/>
-			    	<select id="sido">
+			    	<select id="sido" class="search-select">
 						<option value="">시/도 </option>
 						<option value="서울특별시">서울</option>
 						<option value="부산광역시">부산</option>

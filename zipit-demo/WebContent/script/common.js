@@ -1,5 +1,5 @@
 (function($){
-	// apply style to select box
+	// 셀렉트박스 스타일 적용
 	$.fn.extend({
 		customStyle : function(options) {
 			var agt = navigator.userAgent.toLowerCase();
@@ -70,7 +70,8 @@ $(function(){
 		}
 	});
 	
-	$("select").customStyle();
+	// 셀렉트박스 스타일 적용
+	$(".search-select").customStyle();
 });
 
 
