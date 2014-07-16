@@ -85,6 +85,7 @@ function callbackSearch(data){
 		for(var i=0; i<len; i++){
 			var row = data[i];
 			
+			var newZipCode = row.NEW_ZIPCODE.substring(0,3) + '-' + row.NEW_ZIPCODE.substring(3);
 			var addr = row.SIDO + ' ' + row.GUGUN + ' ' + row.DONG;
 			if(row.RI != null && row.RI != ''){
 				addr += ' ' + row.RI;
@@ -94,8 +95,8 @@ function callbackSearch(data){
 				detailAddr += '-' + $("#bunji2").val() + ' ';
 			}
 			
-			html += '<tr onclick="javascript:applyAddress(\'' + row.NEW_ZIPCODE + '\', \'' + addr + '\', \'' + detailAddr + '\');">';
-			html += "<td>" + row.NEW_ZIPCODE + "</td>";
+			html += '<tr onclick="javascript:applyAddress(\'' + newZipCode + '\', \'' + addr + '\', \'' + detailAddr + '\');">';
+			html += "<td>" + newZipCode + "</td>";
 			html += "<td>" + row.SIDO + "</td>";
 			html += "<td>" + row.GUGUN + "</td>";
 			html += "<td>" + row.DONG + "</td>";
@@ -127,7 +128,7 @@ function callbackSearch(data){
 
 // 조회한 주소 적용하기
 function applyAddress(zipCd, addr1, addr2){
-	$("#dbZipcd").val(zipCd.substring(0,3) + '-' + zipCd.substring(3));
+	$("#dbZipcd").val(zipCd);
 	$("#dbAddr1").val(addr1);
 	if(addr2 != ''){
 		$("#dbAddr2").val(addr2 + " ");
