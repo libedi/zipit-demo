@@ -62,8 +62,8 @@ $(function(){
 	});
 	
 	// 주소조회 엔터키 이벤트
-	$(".search-address :text").keyup(function(){
-		var keycode = (event.keyCode ? event.keyCode : event.which);	// firefox 크로스 브라우징 처리
+	$(".search-address :text").keyup(function(event){				// firefox 크로스 브라우징 처리
+		var keycode = (event.keyCode ? event.keyCode : event.which);
 		if(keycode == 13){
 			searchAddress();
 			return;
