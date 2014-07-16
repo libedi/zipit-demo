@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//WebContent/css/style.css=UTF-8
+encoding//src/log4j.xml=UTF-8
 encoding/<project>=UTF-8
+separateDerivedEncodings=true
